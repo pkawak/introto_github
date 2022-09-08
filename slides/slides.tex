@@ -1,0 +1,595 @@
+% Preamble
+\pdfminorversion=4
+\documentclass[aspectratio=169]{beamer}
+\usepackage{multimedia} % for videos
+\usepackage{bm} % for bold math (for tensors)
+\usepackage{layout} % put command \layout{} onto an empty frame to see margin lengths
+\usepackage{adjustbox}
+\usepackage{lipsum}
+\usepackage{pdfpages}
+\usepackage{hyperref} % for hyperlinks
+\usepackage{ulem} % for underline, etc.
+
+% ----- beamer settings -----
+% {{{
+
+% define some colors/shades
+\definecolor{lightblue}{HTML}{66A3D2}
+\definecolor{darkblue}{HTML}{0B61A4}
+\definecolor{lightorange}{HTML}{FF8E0B}
+\definecolor{darkorange}{HTML}{D45500}
+\definecolor{paleorange}{HTML}{FFDEB3}
+
+% set color for hyperlinks
+\hypersetup{colorlinks, linkcolor=darkgray, citecolor=darkgray, urlcolor=darkgray}
+
+% set theme
+\usetheme{boxes}
+\usefonttheme[onlymath]{serif}
+
+% set beamer theme colors, etc.
+\setbeamercolor{frametitle}{fg=black}
+
+% customize blocks
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor{block title}{fg=white, bg=darkblue}
+\setbeamercolor{block body}{fg=black, bg=lightblue}
+
+% customize enumerate and item, including color and spacing
+\setbeamercolor*{item}{fg=darkblue}
+\setbeamercolor*{enumerate item}{fg=black}
+\setbeamercolor*{enumerate subitem}{fg=black}
+\setbeamercolor*{enumerate subsubitem}{fg=black}
+\setbeamertemplate{itemize subitem}{$-$}
+\setlength{\leftmarginii}{10pt}
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+
+% customize footer
+\setbeamercolor{footline}{fg=gray}
+\setbeamertemplate{navigation symbols}{} % get rid of navigation bar
+
+% add page numbers to footer
+\makeatletter
+\setbeamertemplate{footline}{
+    \leavevmode%
+    \hbox{%
+    \begin{beamercolorbox}[wd=0.5\paperwidth,ht=2.25ex,dp=1ex,left,leftskip=1ex]{}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[wd=0.5\paperwidth,ht=2.25ex,dp=1ex,right,rightskip=2ex]{}
+      \insertframenumber % page number only
+      % \insertframenumber/\inserttotalframenumber % page number/total pages
+    \end{beamercolorbox}
+    }\vskip0pt
+}
+\makeatother
+% }}}
+
+% ----- tikz ----- (for drawing)
+% {{{
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,arrows,backgrounds,fit}
+% tikz define invisible: 
+% http://tex.stackexchange.com/questions/55806/mindmap-tikzpicture-in-beamer-reveal-step-by-step/55849#55849
+\tikzset{
+  invisible/.style={opacity=0.2},
+  visible on/.style={alt=#1{}{invisible}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+  },
+}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\newcommand{\highlighteq}[2]{ \tikz[baseline]{\node[fill=#1,rounded corners,anchor=base]{$\displaystyle \strut #2$};} }
+
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+}}
+
+% }}}
+
+% --- Notes on options for including movies ---
+% {{{
+
+% (1) movie15 package
+% \usepackage{movie15}
+% \includemovie[text={\includegraphics[width=5cm]{figs/lam_t0.pdf}}]{}{}{figs/lam.avi}
+% Comments: 
+%   * apparently depreciated (superceded by movie9), but seems to play movies fine
+%   * (bad) Puts a pushpin icon over the video
+%   * (good) Actually embeds the movie, so don't need to include a separate folder
+%   * (bad) Puts black or white bars when playing movie with controls (changes size of
+%     the movie to fit the controls into the frame).
+
+% (2) movie9 package
+% \usepackage{media9}
+% Comments:
+%   * Plays using a flash player. Doesn't work on Linux.
+
+% (3) multimedia package
+% \usepackage{multimedia}
+% \movie[width=5cm, showcontrols]{\includegraphics[width=5cm]{figs/lam_t0.pdf}}{figs/lam.avi}
+% Comments:
+%   * (good) Seems like the best (but flawed) option for playing a movie in the frame
+%   * (bad) Does not embed the movie. Need a separate videos folder.
+%   * (bad) Puts black or white bars when playing movie with controls (changes size of
+%     the movie to fit the controls into the frame).
+%   * (aside) Appears that the backend of the player (same as movie15 pacakge) can be 
+%     changed from gstreamer to vlc. Used apt-get install phonon-backend-vlc. Made bars
+%     white, not black, which was a marginal improvement.
+%     http://tex.stackexchange.com/questions/163089/okular-to-play-embedded-videos-in-beamer
+
+% (4) Hyperlink
+% \include{hyperref}
+% \href{run:figs/lam.avi}{\includegraphics[width=5cm]{figs/lam_t0.pdf}}
+% Comments:
+%   * Runs an external viewer (like VLC)
+%   * (good) Cross-platform compatible
+%   * (bad) Means lots of clicking, and not very easy to move back and forth
+%   * (bad) Does not embed the movie. Need a separate videos folder.
+%   * (bad) Cannot set up a script to give arguments to external program (e.g. VLC)
+
+% (5) pdfpc
+% \href{run:figs/lam.avi?autostart&loop}{\includegraphics[width=5cm]{figs/lam_t0.pdf}}
+% Comments:
+%   * (neutral) Separate presentation platform. Has nice features.
+%   * (bad) Has a slow "pre-rendering" feature.
+%   * (bad) All tested videos end up very poor resolution.
+%   * (good) Viewer does not re-size videos with ugly controls
+
+% }}}
+
+% ----- tips/tricks & custom definitions ----
+% {{{
+
+%% ** block title without a block **
+\newcommand{\blocktitle}[1]{
+  \begin{tikzpicture}
+    \node[ fill, color=darkblue, text=white, rounded corners, inner sep=4pt,
+           align=center, minimum width=4cm, minimum height=\baselineskip
+    ] 
+    {\large #1\par};
+  \end{tikzpicture}
+}
+
+% ** columns **
+%  \begin{columns}[T]
+%    \begin{column}{0.45\textwidth}
+%      Column 1: Theory
+%    \end{column}
+%    \begin{column}{0.45\textwidth}
+%      Column 2: Experiment
+%    \end{column}
+%  \end{columns}
+
+% ** make a figure bigger than the textwidth **
+%\makebox[\textwidth][c]{\includegraphics[width=1.0\textwidth]{figs/immersion_precipitation_roll.pdf}}
+
+% ** bulk commenting **
+%\iffalse
+%\fi
+
+% ** Put citation in bottom middle **
+%\begin{tikzpicture}[remember picture, overlay]
+%  \node[text width=\textwidth, align=center, anchor=south] at (current page.south) {
+%    \scriptsize Lee et al. Adv.~Materials. 29, 1076008 (2017)\par
+%  };
+%\end{tikzpicture}
+
+% }}}
+
+% custom title page
+% {{{
+\setbeamerfont{author}{size=\normalsize} % font sizes
+\newcommand{\location}[1]{\def\insertlocation{#1}}
+\newcommand{\titlecolor}{\color{white}}
+\newcommand{\bottomcolor}{\color{white}}
+% https://tex.stackexchange.com/questions/350511/latex-beamer-create-own-variable
+\newcommand\insertpresenter{}
+\newcommand\presenter[1]{\renewcommand\insertpresenter{ \uline{#1}} }
+
+\defbeamertemplate*{title page}{customized}[1][]
+{
+    \begin{tikzpicture}[remember picture, overlay]
+
+      % background photo
+      \node [draw=none, align=center] at (current page.center)
+      {
+        \includegraphics[keepaspectratio, width=1.01\paperwidth]{./figs/cover_art_cropped.pdf}
+      };
+
+      % BYU logo
+      \node [draw=none, align=center, anchor=north west] 
+        at ([xshift=-0.05in, yshift=0.05in] current page.north west)
+      {
+        \includegraphics[keepaspectratio, width=0.75in]{./figs/BYU_IM22a.pdf}
+      };
+
+     % group logo
+      \node [draw=none, align=center, anchor=north east] at (current page.north east)
+      {
+        \includegraphics[keepaspectratio, width=0.6in]{./figs/TreeGroupLogo.pdf}
+      };
+  
+      % title
+      \usebeamercolor{title}
+      \node [text width=0.80\paperwidth, align=center, draw=none, fill=black, rounded corners,
+             fill opacity=0.3, text opacity=1, inner sep=5pt,
+             below = 0.3in of current page.center, anchor=center] 
+      {
+        {
+          \huge \titlecolor{} \inserttitle\par
+        }
+        \vspace{12pt}
+        {
+          \Large \bottomcolor{}\insertpresenter, \insertauthor \par
+        } 
+        \vspace{8pt}
+        { 
+          \bottomcolor{} \insertinstitute \par
+        }
+
+      };
+
+      % add date
+      \node [draw=none, text width=0.6\paperwidth, anchor=south west] (date)
+      at (current page.south west)
+      {
+        \bottomcolor{}
+        \raggedright
+        \insertlocation\par
+      };
+
+      % add location
+      \node [draw=none, above left = 0cm and 0cm of current page.south east, text width=0.6\paperwidth] (date)
+      {
+        \bottomcolor{}
+        \raggedleft
+        \insertdate\par
+      };
+
+    \end{tikzpicture}
+    
+}
+% }}}
+
+% ----- title/author info -----
+\title{Talk Title\\A second line}
+\presenter{Speaker Name (underlined)}
+% for other authors
+\author{Contributing Author1, and Contributing Author2}
+\institute{Brigham Young University}
+\location{Meeting Name}
+\date{Month DD, YYYY}
+
+\begin{document}
+
+\begin{frame}[plain]
+  % customize title page using the template in the preamble
+  \titlepage
+\end{frame}
+
+\begin{frame}[c]{Simple Slide with a Block}
+% {{{
+
+  % [c] vertically centers your content
+  % [t] will top align the content
+
+  \centering
+  \vspace{-0.5\baselineskip}
+  \begin{block}{Example Block}
+    \begin{itemize} 
+    \item This is like Powerpoint
+    \item Isn't it a terrible slide?
+    \item \href{https://www.overleaf.com/learn/latex/Beamer\_Presentations\%3A\_A\_Tutorial\_for\_Beginners\_(Part\_1)\%E2\%80\%94Getting\_Started}{Here} is a link to a Beamer tutorial by Overleaf. 
+It gives some good basics.
+  \end{itemize}
+  \end{block}
+
+%% }}}
+\end{frame}
+
+\begin{frame}{Two Columns with Blocks}
+% {{{
+
+  \begin{columns}[T]
+
+  \column{0.45\textwidth}
+
+    \centering
+    \vspace{-0.5\baselineskip}
+    \begin{block}{Example Block with Items}
+      \begin{itemize} 
+      \item At least this slide has an image!
+      \item Item 2
+      \item Item 3
+      \item Item 4
+    \end{itemize}
+    \end{block}
+
+  \column{0.45\textwidth}
+
+    \centering
+    \blocktitle{Block Title Only}
+    \includegraphics[width=\textwidth]{figs/fig-placeholder.pdf}
+
+    {
+      \scriptsize 
+      Example citation.\par
+      Sosa et al. Macromolecules. 49, 3580 (2016)\par
+      You need a par after it to get the text size and spacing to change properly.\par
+    }
+
+  \end{columns}
+
+%% }}}
+\end{frame}
+
+\begin{frame}{Successively adding material to a slide}
+% {{{
+
+  \begin{block}{Using Overlay Specs}
+  
+  This is called ``Overlay'' in Beamer.
+  There are different ways to do this. 
+  I give just a few examples.
+  See \href{https://www.overleaf.com/learn/latex/Beamer\_Presentations\%3A\_A\_Tutorial\_for\_Beginners\_(Part\_4)\%E2\%80\%94Overlay\_Specifications}{this link} for more.
+  Note that the slide number doesn't change.
+  \end{block}
+  
+
+  \begin{columns}[T]
+
+  \column{0.45\textwidth}
+
+    \centering
+    \vspace{-0.5\baselineskip}
+    \begin{block}{Example Block with Items}
+      \begin{itemize} 
+      \item<1-> Item 1
+      \item<2,4> Item 2
+      \item<3> Item 3
+      \item<4-> Item 4
+    \end{itemize}
+    \end{block}
+
+  \column{0.45\textwidth}
+
+    \centering
+    \vspace{-0.5\baselineskip}
+  
+    \onslide<1->{
+    \begin{equation*}
+    a^{2} + b^{2} = c^{2}
+    \end{equation*}
+    }
+
+    \only<2>{
+    \begin{equation*}
+    e^{-i \pi} = -1
+    \end{equation*}
+    }
+
+    \onslide<3>{
+    \begin{equation*}
+    \sin(x)^{2} + \cos(x)^{2} = 1
+    \end{equation*}
+    }
+
+  \end{columns}
+
+%% }}}
+\end{frame}
+
+\begin{frame}<1>[label=outline]{Repeating frames}
+% {{{
+
+  \begin{block}{Using Overlay Specs}
+  Sometimes you want to repeat a slide.
+  A label and the command \texttt{againframe} allows you to do this (even if the frames are not back-to-back).
+  \end{block}
+
+  \onslide<1->{
+  \begin{equation*}
+  a^{2} + b^{2} = c^{2}
+  \end{equation*}
+  }
+
+  \only<2>{
+  \begin{equation*}
+  e^{-i \pi} = -1
+  \end{equation*}
+  }
+
+  \onslide<3>{
+  \begin{equation*}
+  \sin(x)^{2} + \cos(x)^{2} = 1
+  \end{equation*}
+  }
+
+%% }}}
+\end{frame}
+
+\againframe<2>{outline}
+
+\begin{frame}{Relative Placement Using Tikz}
+% {{{
+
+  \begin{block}{Floating Picture with Relative Locations Inside}
+  Sometimes you want more control over placement than just columns.
+  Tikz is good at this.
+  This slides shows Tikz doing relative placement, but the overall TikzPicture is still placed by beamers algorithms to fit with your other content.
+  \end{block}
+
+  \begin{tikzpicture}
+
+    \node[text width=4cm, align=center, inner sep=0pt] (A) {
+      \includegraphics[width=\textwidth]{figs/fig-placeholder.pdf}
+    };
+
+    \node[text width=2cm, align=center, inner sep=0pt, right = 0.3 of A] (B) {
+      \includegraphics[width=\textwidth]{figs/TreeGroupLogo.pdf}
+    };
+
+    \node[text width=3cm, align=center, inner sep=0pt, right = 0.3 of B] (C) {
+      \includegraphics[width=\textwidth]{figs/BYU_IM22a.pdf}
+    };
+
+    \node[text width=6.5cm, align=left, inner sep=0pt, 
+          below right = 0.1 and 0.1 of A.south, anchor=north west, inner sep=0pt] (D) {
+      You can put text in these nodes too\ldots
+    };
+
+  \end{tikzpicture}
+
+  \begin{block}{Links to more details about relative positioning}
+    \begin{itemize}
+    \item \href{https://tex.stackexchange.com/questions/69439/how-can-i-achieve-relative-positioning-in-tikz}{Obligatory Stack Exchange Answer}
+    \item \href{https://www.bu.edu/math/files/2013/08/tikzpgfmanual.pdf}{Tikz Documentation}
+    \end{itemize}
+  \end{block}
+
+% }}}
+\end{frame}
+
+\begin{frame}{Absolute Placement Using Tikz}
+% {{{
+
+  \begin{tikzpicture}[remember picture, overlay]
+
+    % this stretches the figure to fit, even if it isn't the right ratio.
+    % get rid of the adjustbox if you don't want to stretch it.
+    \node[inner sep=0pt, align=center, anchor=center, opacity=0.25] (C) at (current page.center) {
+      \adjustbox{max width=\paperwidth}{
+        \includegraphics[height=\paperheight]{figs/Tree_Group_Photo_2021-04-15.jpg}
+      }
+    };
+
+    \node[inner sep=0pt, text width=6cm, align=left, anchor=north west] (A) at ([yshift=-1.5cm, xshift=0.5cm] current page.north west) {
+      Tikz can also be used to do absolute placement of text and images.
+      You can even cover the whole page with an image.
+      You can also mix this with relative positioning.
+    };
+
+    \node[inner sep=0pt, align=center, anchor=center] (B) at (current page.center) {
+      \includegraphics[width=4cm]{figs/fig-placeholder.pdf}
+    };
+
+  \end{tikzpicture}
+
+% }}}
+\end{frame}
+
+\againframe<3>{outline}
+
+\begin{frame}[plain]
+% {{{
+
+  Here is a plain frame with no title and no slide number.
+
+% }}}
+\end{frame}
+
+\begin{frame}[t]{Movies}
+% {{{
+
+  \centering
+  \begin{tikzpicture}
+
+    \node[inner sep=0pt, align=center] (video) {
+
+      \movie[width=7cm, poster, autostart, loop, showcontrols] {
+        \includegraphics[width=7cm]{vids/example_video_firstframe.png}}
+        {vids/example_video.mp4}
+
+    };
+
+    \node[align=center, text width=0.45\textwidth, right = 0.5 of video] (note)
+    {
+      \begin{block}{Using the multimedia package}
+        We can include movies in the pdf using the multimedia package!
+        A movie needs two things stored in the \texttt{vids} directory:
+        \begin{itemize}
+        \item A figure for the first frame
+        \item A movie in \texttt{.avi} or \texttt{.mp4} format
+        \end{itemize}
+        These movies are not embedded in the pdf, but the relative reference is preserved.
+        As such, \texttt{vids} \emph{needs to be moved with the pdf} (this is why I keep them in a separate directory).
+      \end{block}
+    };
+
+  \end{tikzpicture}
+
+% }}}
+\end{frame}
+
+\begin{frame}[t]{Acknowledgements}
+%% {{{
+
+  \begin{columns}[T]
+
+    \column{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}
+
+        \node[text width=\columnwidth, align=center, inner sep=0pt] (A) {
+          \includegraphics[width=\textwidth]{figs/Tree_Group_Photo_2021-04-15.jpg}
+        }; 
+
+        \node[text width=1cm, align=center, fill=white, rounded corners=0.2cm, 
+              opacity=0.5, text opacity=1, 
+              above right = 2.5 and 4.2 of A.south west, anchor=south west] (B) {
+          \small{}Dakota Banks\par
+        };
+
+        \node[text width=1.20cm, align=center, fill=white, rounded corners=0.2cm, 
+              draw=lightorange, thick, opacity=0.5, text opacity=1,
+              above right = 2.5 and 1.2 of A.south west, anchor=south west] (C) {
+          \small{}Rami Alhasan\par
+        };
+
+      \end{tikzpicture}
+
+    \column{0.48\textwidth}
+      \vspace{-8pt}
+      {\small
+      \begin{itemize}
+        \item {\color{lightorange}Prof. Glenn Fredrickson (UCSB)}
+        \item Prof. Hector Ceniceros (UCSB)
+        \item {\color{lightorange}Dr. Kris Delaney (UCSB)}
+        \item Dr. Tatsuhiro Iwama (Asahi Kasei)
+        \item {\color{lightorange}Jan Garcia (UCSB)}
+      \end{itemize}
+      }
+
+  \end{columns}
+  \vspace{12pt}
+  \begin{center}
+  \begin{tikzpicture}
+
+    \node[inner sep=0pt, align=center ] (A)
+    { 
+      \includegraphics[width=2.55cm]{./figs/BYU_IM26b.pdf}
+    };
+
+    \node[inner sep=0pt, align=center, anchor=center, right=9 pt of A.east] (B)
+    { 
+      \includegraphics[width=2.05cm]{./figs/ACS-PRF_logo.jpg}
+    };
+    \node[inner sep=0pt, align=center, text width=3cm, right= 3 pt of B.east] (C) { 
+      BYU ORC \\[2pt]
+      \includegraphics[width=2.05cm]{./figs/BYU_ORC_chassis.jpg}
+    };
+
+  \end{tikzpicture}
+  \end{center}
+
+
+
+%% }}}
+\end{frame}
+
+\end{document}
+

@@ -1,0 +1,16 @@
+/figures/*
+!/figures/
+!/figures/.gitkeep
+
+/figures/example_figure_subdir/*
+!/figures/example_figure_subdir/*
+!/figures/example_figure_subdir/.gitkeep
+
+slides/slides.aux
+slides/slides.log
+slides/slides.nav
+slides/slides.out
+slides/slides.snm
+slides/slides.toc
+
+*.swp
