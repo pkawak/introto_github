@@ -16,12 +16,22 @@
 % define some colors/shades
 \definecolor{lightblue}{HTML}{66A3D2}
 \definecolor{darkblue}{HTML}{0B61A4}
+\definecolor{lightgreen}{HTML}{CFC493}
+\definecolor{darkgreen}{HTML}{006747}
 \definecolor{lightorange}{HTML}{FF8E0B}
 \definecolor{darkorange}{HTML}{D45500}
 \definecolor{paleorange}{HTML}{FFDEB3}
 
 % set color for hyperlinks
-\hypersetup{colorlinks, linkcolor=darkgray, citecolor=darkgray, urlcolor=darkgray}
+%\hypersetup{colorlinks, linkcolor=darkgray, citecolor=darkgray, urlcolor=darkgray}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    linkbordercolor=darkgreen,
+  %  pdfborderstyle={/S/U/W 1},
+    }
 
 % set theme
 \usetheme{boxes}
@@ -32,11 +42,11 @@
 
 % customize blocks
 \setbeamertemplate{blocks}[rounded][shadow=false]
-\setbeamercolor{block title}{fg=white, bg=darkblue}
-\setbeamercolor{block body}{fg=black, bg=lightblue}
+\setbeamercolor{block title}{fg=white, bg=darkgreen}
+\setbeamercolor{block body}{fg=black, bg=lightgreen}
 
 % customize enumerate and item, including color and spacing
-\setbeamercolor*{item}{fg=darkblue}
+\setbeamercolor*{item}{fg=darkgreen}
 \setbeamercolor*{enumerate item}{fg=black}
 \setbeamercolor*{enumerate subitem}{fg=black}
 \setbeamercolor*{enumerate subsubitem}{fg=black}
@@ -147,7 +157,7 @@
 %% ** block title without a block **
 \newcommand{\blocktitle}[1]{
   \begin{tikzpicture}
-    \node[ fill, color=darkblue, text=white, rounded corners, inner sep=4pt,
+    \node[ fill, color=darkgreen, text=white, rounded corners, inner sep=4pt,
            align=center, minimum width=4cm, minimum height=\baselineskip
     ] 
     {\large #1\par};
@@ -197,26 +207,26 @@
       % background photo
       \node [draw=none, align=center] at (current page.center)
       {
-        \includegraphics[keepaspectratio, width=1.01\paperwidth]{./figs/cover_art_cropped.pdf}
+        \includegraphics[keepaspectratio, width=1.01\paperwidth]{./figs/github_back2.jpeg}
       };
 
       % BYU logo
       \node [draw=none, align=center, anchor=north west] 
         at ([xshift=-0.05in, yshift=0.05in] current page.north west)
       {
-        \includegraphics[keepaspectratio, width=0.75in]{./figs/BYU_IM22a.pdf}
+        \includegraphics[keepaspectratio, width=1.0in]{./figs/USF_logo.png}
       };
 
      % group logo
       \node [draw=none, align=center, anchor=north east] at (current page.north east)
       {
-        \includegraphics[keepaspectratio, width=0.6in]{./figs/TreeGroupLogo.pdf}
+        \includegraphics[keepaspectratio, width=2.0in]{./figs/Simmons_logo.png}
       };
   
       % title
       \usebeamercolor{title}
       \node [text width=0.80\paperwidth, align=center, draw=none, fill=black, rounded corners,
-             fill opacity=0.3, text opacity=1, inner sep=5pt,
+             fill opacity=0.5, text opacity=1, inner sep=5pt,
              below = 0.3in of current page.center, anchor=center] 
       {
         {
@@ -224,7 +234,7 @@
         }
         \vspace{12pt}
         {
-          \Large \bottomcolor{}\insertpresenter, \insertauthor \par
+          \Large \bottomcolor{}\insertpresenter \par
         } 
         \vspace{8pt}
         { 
@@ -256,13 +266,11 @@
 % }}}
 
 % ----- title/author info -----
-\title{Talk Title\\A second line}
-\presenter{Speaker Name (underlined)}
-% for other authors
-\author{Contributing Author1, and Contributing Author2}
-\institute{Brigham Young University}
-\location{Meeting Name}
-\date{Month DD, YYYY}
+\title{A Quick Introduction to Git \& GitHub}
+\presenter{Pierre Kawak}
+\institute{University of South Florida}
+\location{Simmons Lab Group Meeting}
+\date{September 8, 2022}
 
 \begin{document}
 
@@ -271,322 +279,114 @@
   \titlepage
 \end{frame}
 
-\begin{frame}[c]{Simple Slide with a Block}
+\begin{frame}[c]{GitHub simplifies version control}
 % {{{
 
   % [c] vertically centers your content
   % [t] will top align the content
 
-  \centering
-  \vspace{-0.5\baselineskip}
-  \begin{block}{Example Block}
-    \begin{itemize} 
-    \item This is like Powerpoint
-    \item Isn't it a terrible slide?
-    \item \href{https://www.overleaf.com/learn/latex/Beamer\_Presentations\%3A\_A\_Tutorial\_for\_Beginners\_(Part\_1)\%E2\%80\%94Getting\_Started}{Here} is a link to a Beamer tutorial by Overleaf. 
-It gives some good basics.
-  \end{itemize}
-  \end{block}
-
-%% }}}
-\end{frame}
-
-\begin{frame}{Two Columns with Blocks}
-% {{{
-
   \begin{columns}[T]
 
   \column{0.45\textwidth}
 
     \centering
-    \vspace{-0.5\baselineskip}
-    \begin{block}{Example Block with Items}
+%    \vspace{\baselineskip}
+    \begin{block}{Git is a god-tier tool}
       \begin{itemize} 
-      \item At least this slide has an image!
-      \item Item 2
-      \item Item 3
-      \item Item 4
+      \item Saves history
+      \item Allows collaboration
+      \item Tools to search/debug
+      \item On the cloud/automatic backups
+      \item Move b/w machines
+      \item Portable and minimal
+    \end{itemize}
+    \end{block}
+
+    \begin{block}{What I use it for}
+      \begin{itemize} 
+      \item Build code
+      \item Make presentations
+      \item Write papers
     \end{itemize}
     \end{block}
 
   \column{0.45\textwidth}
 
     \centering
-    \blocktitle{Block Title Only}
-    \includegraphics[width=\textwidth]{figs/fig-placeholder.pdf}
+    \vspace{\baselineskip}
+    \includegraphics[width=\textwidth]{figs/fig-git_branches.png}
 
-    {
-      \scriptsize 
-      Example citation.\par
-      Sosa et al. Macromolecules. 49, 3580 (2016)\par
-      You need a par after it to get the text size and spacing to change properly.\par
-    }
+    \vspace{\baselineskip}
+
+    \includegraphics[width=\textwidth]{figs/fig-git_branches_others.png}
 
   \end{columns}
 
 %% }}}
 \end{frame}
 
-\begin{frame}{Successively adding material to a slide}
+\begin{frame}{The basics of Git \& GitHub}
 % {{{
 
-  \begin{block}{Using Overlay Specs}
-  
-  This is called ``Overlay'' in Beamer.
-  There are different ways to do this. 
-  I give just a few examples.
-  See \href{https://www.overleaf.com/learn/latex/Beamer\_Presentations\%3A\_A\_Tutorial\_for\_Beginners\_(Part\_4)\%E2\%80\%94Overlay\_Specifications}{this link} for more.
-  Note that the slide number doesn't change.
-  \end{block}
-  
-
-  \begin{columns}[T]
-
-  \column{0.45\textwidth}
-
     \centering
-    \vspace{-0.5\baselineskip}
-    \begin{block}{Example Block with Items}
+    \begin{block}{Some tutorial links}
       \begin{itemize} 
-      \item<1-> Item 1
-      \item<2,4> Item 2
-      \item<3> Item 3
-      \item<4-> Item 4
+      \item Set keys for GitHub to recognize you, i.e. \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh}{set up ssh keys}
+      \item \href{https://docs.github.com/en/get-started/quickstart/create-a-repo}{Creating a repo(sitory)}
+      \item Copying work from the cloud to your machine, i.e. \href{https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository}{cloning a repo}
+      \item How to save your work, i.e. \href{https://github.com/git-guides/git-commit}{commit} \& \href{https://github.com/git-guides/git-push}{push}
     \end{itemize}
     \end{block}
 
-  \column{0.45\textwidth}
+    \vspace{\baselineskip}
+
+    \begin{block}{Let's try this together}
+      \begin{itemize} 
+      \item Creating a repo and commiting!
+      \item Using git bad to debug your code
+    \end{itemize}
+    \end{block}
+
+%% }}}
+\end{frame}
+
+\begin{frame}{The next slides are on my work computer!}
+% {{{
+
+  \includegraphics[width=\textwidth]{figs/oh_no.png}
+
+%% }}}
+\end{frame}
+
+\begin{frame}{The basics of Git \& GitHub}
+% {{{
 
     \centering
-    \vspace{-0.5\baselineskip}
-  
-    \onslide<1->{
-    \begin{equation*}
-    a^{2} + b^{2} = c^{2}
-    \end{equation*}
-    }
+    \vspace{-0.25\baselineskip}
 
-    \only<2>{
-    \begin{equation*}
-    e^{-i \pi} = -1
-    \end{equation*}
-    }
-
-    \onslide<3>{
-    \begin{equation*}
-    \sin(x)^{2} + \cos(x)^{2} = 1
-    \end{equation*}
-    }
-
-  \end{columns}
-
-%% }}}
-\end{frame}
-
-\begin{frame}<1>[label=outline]{Repeating frames}
-% {{{
-
-  \begin{block}{Using Overlay Specs}
-  Sometimes you want to repeat a slide.
-  A label and the command \texttt{againframe} allows you to do this (even if the frames are not back-to-back).
-  \end{block}
-
-  \onslide<1->{
-  \begin{equation*}
-  a^{2} + b^{2} = c^{2}
-  \end{equation*}
-  }
-
-  \only<2>{
-  \begin{equation*}
-  e^{-i \pi} = -1
-  \end{equation*}
-  }
-
-  \onslide<3>{
-  \begin{equation*}
-  \sin(x)^{2} + \cos(x)^{2} = 1
-  \end{equation*}
-  }
-
-%% }}}
-\end{frame}
-
-\againframe<2>{outline}
-
-\begin{frame}{Relative Placement Using Tikz}
-% {{{
-
-  \begin{block}{Floating Picture with Relative Locations Inside}
-  Sometimes you want more control over placement than just columns.
-  Tikz is good at this.
-  This slides shows Tikz doing relative placement, but the overall TikzPicture is still placed by beamers algorithms to fit with your other content.
-  \end{block}
-
-  \begin{tikzpicture}
-
-    \node[text width=4cm, align=center, inner sep=0pt] (A) {
-      \includegraphics[width=\textwidth]{figs/fig-placeholder.pdf}
-    };
-
-    \node[text width=2cm, align=center, inner sep=0pt, right = 0.3 of A] (B) {
-      \includegraphics[width=\textwidth]{figs/TreeGroupLogo.pdf}
-    };
-
-    \node[text width=3cm, align=center, inner sep=0pt, right = 0.3 of B] (C) {
-      \includegraphics[width=\textwidth]{figs/BYU_IM22a.pdf}
-    };
-
-    \node[text width=6.5cm, align=left, inner sep=0pt, 
-          below right = 0.1 and 0.1 of A.south, anchor=north west, inner sep=0pt] (D) {
-      You can put text in these nodes too\ldots
-    };
-
-  \end{tikzpicture}
-
-  \begin{block}{Links to more details about relative positioning}
-    \begin{itemize}
-    \item \href{https://tex.stackexchange.com/questions/69439/how-can-i-achieve-relative-positioning-in-tikz}{Obligatory Stack Exchange Answer}
-    \item \href{https://www.bu.edu/math/files/2013/08/tikzpgfmanual.pdf}{Tikz Documentation}
+    \begin{block}{Some tutorial links}
+      \begin{itemize} 
+      \item Set keys for GitHub to recognize you, i.e. \href{https://docs.github.com/en/authentication/connecting-to-github-with-ssh}{set up ssh keys}
+      \item \href{https://docs.github.com/en/get-started/quickstart/create-a-repo}{Creating a repo(sitory)}
+      \item Copying work from the cloud to your machine, i.e. \href{https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository}{cloning a repo}
+      \item How to save your work, i.e. \href{https://github.com/git-guides/git-commit}{commit} \& \href{https://github.com/git-guides/git-push}{push}
     \end{itemize}
-  \end{block}
+    \end{block}
 
-% }}}
-\end{frame}
+    \begin{block}{Let's try this together}
+      \begin{itemize} 
+      \item Creating a repo and commiting!
+      \item Using git bad to debug your code
+      \item \bf{Easy to move between machines}\\git clone git@github.com:/\$\{USER\}/\$\{REPO\}.git
+    \end{itemize}
+    \end{block}
 
-\begin{frame}{Absolute Placement Using Tikz}
-% {{{
-
-  \begin{tikzpicture}[remember picture, overlay]
-
-    % this stretches the figure to fit, even if it isn't the right ratio.
-    % get rid of the adjustbox if you don't want to stretch it.
-    \node[inner sep=0pt, align=center, anchor=center, opacity=0.25] (C) at (current page.center) {
-      \adjustbox{max width=\paperwidth}{
-        \includegraphics[height=\paperheight]{figs/Tree_Group_Photo_2021-04-15.jpg}
-      }
-    };
-
-    \node[inner sep=0pt, text width=6cm, align=left, anchor=north west] (A) at ([yshift=-1.5cm, xshift=0.5cm] current page.north west) {
-      Tikz can also be used to do absolute placement of text and images.
-      You can even cover the whole page with an image.
-      You can also mix this with relative positioning.
-    };
-
-    \node[inner sep=0pt, align=center, anchor=center] (B) at (current page.center) {
-      \includegraphics[width=4cm]{figs/fig-placeholder.pdf}
-    };
-
-  \end{tikzpicture}
-
-% }}}
-\end{frame}
-
-\againframe<3>{outline}
-
-\begin{frame}[plain]
-% {{{
-
-  Here is a plain frame with no title and no slide number.
-
-% }}}
-\end{frame}
-
-\begin{frame}[t]{Movies}
-% {{{
-
-  \centering
-  \begin{tikzpicture}
-
-    \node[inner sep=0pt, align=center] (video) {
-
-      \movie[width=7cm, poster, autostart, loop, showcontrols] {
-        \includegraphics[width=7cm]{vids/example_video_firstframe.png}}
-        {vids/example_video.mp4}
-
-    };
-
-    \node[align=center, text width=0.45\textwidth, right = 0.5 of video] (note)
-    {
-      \begin{block}{Using the multimedia package}
-        We can include movies in the pdf using the multimedia package!
-        A movie needs two things stored in the \texttt{vids} directory:
-        \begin{itemize}
-        \item A figure for the first frame
-        \item A movie in \texttt{.avi} or \texttt{.mp4} format
-        \end{itemize}
-        These movies are not embedded in the pdf, but the relative reference is preserved.
-        As such, \texttt{vids} \emph{needs to be moved with the pdf} (this is why I keep them in a separate directory).
-      \end{block}
-    };
-
-  \end{tikzpicture}
-
-% }}}
-\end{frame}
-
-\begin{frame}[t]{Acknowledgements}
-%% {{{
-
-  \begin{columns}[T]
-
-    \column{0.52\textwidth}
-      \centering
-      \begin{tikzpicture}
-
-        \node[text width=\columnwidth, align=center, inner sep=0pt] (A) {
-          \includegraphics[width=\textwidth]{figs/Tree_Group_Photo_2021-04-15.jpg}
-        }; 
-
-        \node[text width=1cm, align=center, fill=white, rounded corners=0.2cm, 
-              opacity=0.5, text opacity=1, 
-              above right = 2.5 and 4.2 of A.south west, anchor=south west] (B) {
-          \small{}Dakota Banks\par
-        };
-
-        \node[text width=1.20cm, align=center, fill=white, rounded corners=0.2cm, 
-              draw=lightorange, thick, opacity=0.5, text opacity=1,
-              above right = 2.5 and 1.2 of A.south west, anchor=south west] (C) {
-          \small{}Rami Alhasan\par
-        };
-
-      \end{tikzpicture}
-
-    \column{0.48\textwidth}
-      \vspace{-8pt}
-      {\small
-      \begin{itemize}
-        \item {\color{lightorange}Prof. Glenn Fredrickson (UCSB)}
-        \item Prof. Hector Ceniceros (UCSB)
-        \item {\color{lightorange}Dr. Kris Delaney (UCSB)}
-        \item Dr. Tatsuhiro Iwama (Asahi Kasei)
-        \item {\color{lightorange}Jan Garcia (UCSB)}
-      \end{itemize}
-      }
-
-  \end{columns}
-  \vspace{12pt}
-  \begin{center}
-  \begin{tikzpicture}
-
-    \node[inner sep=0pt, align=center ] (A)
-    { 
-      \includegraphics[width=2.55cm]{./figs/BYU_IM26b.pdf}
-    };
-
-    \node[inner sep=0pt, align=center, anchor=center, right=9 pt of A.east] (B)
-    { 
-      \includegraphics[width=2.05cm]{./figs/ACS-PRF_logo.jpg}
-    };
-    \node[inner sep=0pt, align=center, text width=3cm, right= 3 pt of B.east] (C) { 
-      BYU ORC \\[2pt]
-      \includegraphics[width=2.05cm]{./figs/BYU_ORC_chassis.jpg}
-    };
-
-  \end{tikzpicture}
-  \end{center}
-
-
+    \begin{block}{Awesome templates}
+      \begin{itemize} 
+      \item \href{https://github.com/tree-group-papers/PaperTemplate}{Papers template}
+      \item \href{https://github.com/tree-group-other/TalkTemplate}{Talks template}
+    \end{itemize}
+    \end{block}
 
 %% }}}
 \end{frame}
